@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import ImageList from "./imageList";
 
 function App() {
     const [images, setImages] = useState<{ file: File; label: string }[]>([])
@@ -41,9 +42,23 @@ function App() {
             data.append("Label", image.label)
         })
 
-        console.log("Form Data:");
-        for (const [key, value] of data.entries()) {
-            console.log(key, value);
+        try {
+            const response = await fetch("http://localhost:3000/upload", {
+                method: "POST",
+                body: data,
+            })
+
+            const res = await response.json()
+
+            if (response.ok) {
+                alert("Image uploaded successfully!")
+                window.location.href = "/imageList.tsx"
+            } else {
+                alert("Upload failed: " + res.error)
+            }
+        } catch (e) {
+            console.error(e)
+            alert("An error occurred while uploading.")
         }
 
     }
@@ -53,7 +68,7 @@ function App() {
             <div className={`w-full h-screen p-16`}>
                 <h1 className={`text-3xl font-bold italic text-[#41aab4]`}>Car Inspection</h1>
                 <h3>All field must be filled</h3>
-                <form onSubmit={submit} method="post" className={`w-full flex flex-col gap-4`}>
+                <form onSubmit={submit} method="post" className={`w-full flex flex-col gap-4 mb-8`}>
                     <div className={`flex flex-col pt-8`}>
                         <label htmlFor={`inspector_name`}>Inspector Name :</label>
                         <input type="text" id="inspector_name" name="inspector_name"
@@ -93,6 +108,7 @@ function App() {
                         </button>
                     </div>
                 </form>
+            <ImageList />
             </div>
         </>
     )
