@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ImageList from "./imageList";
 
 function App() {
@@ -16,9 +16,6 @@ function App() {
     }
 
     const labelImage = (index:number, label: string) => {
-        // const updatedImg = [...images]
-        // updatedImg[index].label = label
-        // setImages(updatedImg)
         setImages((prevImage) => prevImage.map((image, i) => {
             if (i == index) {
                 const fileExt = image.file.name.split('.').pop()
@@ -62,6 +59,8 @@ function App() {
         }
 
     }
+
+    useEffect(() => {}, [images]);
 
     return (
         <>
