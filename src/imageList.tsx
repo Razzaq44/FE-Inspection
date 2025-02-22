@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 
 
 function ImageList() {
-    const [images, setImages] = useState([])
+    const [images, setImages] = useState<{url: string, name: string}[]>([])
 
     useEffect(() => {
         fetch("http://localhost:3000/images")
